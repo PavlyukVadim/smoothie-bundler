@@ -5,5 +5,8 @@
   "devDependencies": {
     "commander": "^2.15.1",
     "precinct": "^4.1.0"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test mocha 'src/**/*.spec.js'"
   }
 }
