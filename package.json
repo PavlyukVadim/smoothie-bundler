@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {},
   "devDependencies": {
-    "commander": "^2.15.1"
+    "commander": "^2.15.1",
+    "precinct": "^4.1.0"
   }
 }

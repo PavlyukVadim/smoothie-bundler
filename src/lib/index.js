@@ -1,18 +1,25 @@
+const fs = require('fs')
 const program = require('commander')
 const pjson = require('./../../package.json')
+const precinct = require('precinct')
+const filesHelpers = require('./../helpers/files')
 
+const { getNextPath } = filesHelpers
 const { version } = pjson
 
 program
   .version(version)
-  .option('-p, --peppers', 'Add peppers')
-  .option('-P, --pineapple', 'Add pineapple')
-  .option('-b, --bbq-sauce', 'Add bbq sauce')
-  .option('-c, --cheese [type]', 'Add the specified type of cheese [marble]', 'marble')
-  .parse(process.argv);
- 
-console.log('you ordered a pizza with:');
-if (program.peppers) console.log('  - peppers');
-if (program.pineapple) console.log('  - pineapple');
-if (program.bbqSauce) console.log('  - bbq');
-console.log('  - %s cheese', program.cheese);
+  .option('-i, --input [fileName]', 'input fileName')
+  .option('-o, --output [fileName]', 'output fileName')
+  .parse(process.argv)
+
+const inputFile = program.input
+const outputFile = program.output // ./../../demo/src/index.js
+
+fs.readFile(inputFile, 'utf8', (err, content) => {
+  if (err) throw err
+  // Pass in a file's content or an AST
+  const deps = precinct(content, { es6: { mixedImports: true } })
+  console.log(getNextPath(inputFile, deps[0]))
+  // console.log(deps)
+})
