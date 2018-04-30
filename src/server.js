@@ -4,10 +4,10 @@ const fs = require('fs')
 const http = require('http')
 
 const cache = new Map()
-const lib = './lib/'
+const libForLR = './libForLR/'
 
 const cacheFile = (path) => {
-  const filePath = lib + path
+  const filePath = libForLR + path
   try {
     const libPath = require.resolve(filePath)
     delete require.cache[libPath]
@@ -36,8 +36,8 @@ const watch = (path) => {
   })
 }
 
-cacheFolder(lib)
-watch(lib)
+cacheFolder(libForLR)
+watch(libForLR)
 
 const ls = (res, list) => {
   res.write('<html>')
