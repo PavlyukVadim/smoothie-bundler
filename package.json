@@ -1,7 +1,8 @@
 {
   "name": "smoothie-bundler",
   "version": "0.0.1",
-  "dependencies": {
-    
+  "dependencies": {},
+  "devDependencies": {
+    "commander": "^2.15.1"
   }
 }
