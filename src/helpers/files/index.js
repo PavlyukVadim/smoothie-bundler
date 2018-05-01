@@ -13,11 +13,11 @@ const getDefaultPath = (basePath) => {
   return path.format({
     dir: basePath,
     name: defaultFileName,
-    ext: defaultExt,
+    ext: defaultExt
   })
 }
 
 module.exports = {
   getNextPath,
-  getDefaultPath,
+  getDefaultPath
 }
