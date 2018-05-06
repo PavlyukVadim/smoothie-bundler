@@ -26,6 +26,8 @@ const getFullRealPath = (basePath) => {
   attempts.push(isFileExist(pathOfDefaultFile))
 
   return raceToSuccess(attempts)
+    .then((data) => data)
+    .catch(() => basePath)
 }
 
 const getPathWithDefaultExt = (basePath, defaultExt = '.js') => {

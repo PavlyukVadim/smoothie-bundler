@@ -1,9 +1,11 @@
 const program = require('commander')
 const precinct = require('precinct')
-const debug = require('debug')('tree')
+const debug = require('debug')
 const pathHelpers = require('./../helpers/path')
 const fileHelpers = require('./../helpers/file')
 const pjson = require('./../../package.json')
+
+const debugTree = debug('tree')
 
 const {
   getRelativePath,
@@ -34,7 +36,7 @@ const getDepsFromFile = fileName => {
  * Recursively find all dependencies
 */
 const traverse = (entryFile, deps = {}) => {
-  debug('entryFile', entryFile)
+  debugTree('entryFile', entryFile)
   return getDepsFromFile(entryFile, deps)
     .then((fileDeps) => {
       if (fileDeps && fileDeps[0]) {
@@ -58,4 +60,7 @@ const traverse = (entryFile, deps = {}) => {
 traverse(inputFile)
   .then((data) => {
     console.log('traverse', data)
+  })
+  .catch((err) => {
+    console.error('traverseErr', err.toString())
   })
