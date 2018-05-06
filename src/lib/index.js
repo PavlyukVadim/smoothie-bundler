@@ -8,10 +8,12 @@ const pjson = require('./../../package.json')
 const debugTree = debug('tree')
 
 const {
-  getRelativePath,
   getFullRealPath
 } = pathHelpers
-const { readFileAsync } = fileHelpers
+const {
+  readFileAsync,
+  isFileExist,
+} = fileHelpers
 const { version } = pjson
 
 program
@@ -37,11 +39,14 @@ const getDepsFromFile = fileName => {
 */
 const traverse = (entryFile, deps = {}) => {
   debugTree('entryFile', entryFile)
+  if (deps[entryFile]) {
+    return Promise.resolve()
+  }
   return getDepsFromFile(entryFile, deps)
     .then((fileDeps) => {
       if (fileDeps && fileDeps[0]) {
         const pFullRealDeps = fileDeps.map((fileName) => {
-          return getFullRealPath(getRelativePath(entryFile, fileName))
+          return getFullRealPath(entryFile, fileName)
         })
 
         return Promise.all(pFullRealDeps)
@@ -57,10 +62,14 @@ const traverse = (entryFile, deps = {}) => {
     })
 }
 
-traverse(inputFile)
-  .then((data) => {
-    console.log('traverse', data)
-  })
-  .catch((err) => {
-    console.error('traverseErr', err.toString())
-  })
+// traverse(inputFile)
+//   .then((data) => {
+//     console.log('traverse', data)
+//   })
+//   .catch((err) => {
+//     console.error('traverseErr', err.toString())
+//   })
+
+isFileExist('demo/src/node_modules/react')
+  .then((data) => console.log(data))
+  .catch((data) => console.log(data))

@@ -1,3 +1,4 @@
+// import main from './../index' // circular dep
 import users from './users'
 
 const data = {

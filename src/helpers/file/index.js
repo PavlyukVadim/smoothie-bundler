@@ -1,5 +1,6 @@
 const fs = require('fs')
 
+
 const readFileAsync = filename => {
   return new Promise((resolve, reject) => {
     fs.readFile(filename, 'utf8', (err, data) => {
@@ -11,6 +12,7 @@ const readFileAsync = filename => {
     })
   })
 }
+
 
 const isFileExist = (basePath) => {
   return new Promise((resolve, reject) => {
@@ -24,7 +26,23 @@ const isFileExist = (basePath) => {
   })
 }
 
+
+const isDirectory = (basePath) => {
+  return new Promise((resolve, reject) => {
+    fs.stat(basePath, (err, stat) => {
+      if (err === null) {
+        const isDirectory = stat.isDirectory()
+        resolve(isDirectory)
+      } else {
+        reject(err.code)
+      }
+    })
+  })
+}
+
+
 module.exports = {
   readFileAsync,
-  isFileExist
+  isFileExist,
+  isDirectory,
 }
