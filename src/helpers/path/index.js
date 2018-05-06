@@ -8,6 +8,13 @@ const getRelativePath = (basePath, relativePath) => {
   return path.join(baseDir, relativePath)
 }
 
+
+/**
+ * Returns the real filePath of dependency with ext
+ *
+ * @param  {String} basePath
+ * @return {String}
+ */
 const getFullRealPath = (basePath) => {
   const exts = supportedExtensions.map((ext) => `.${ext}`)
   const attempts = exts.map((ext) => {

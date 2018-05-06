@@ -13,7 +13,6 @@ const readFileAsync = filename => {
 }
 
 const isFileExist = (basePath) => {
-  console.log('basePath', basePath)
   return new Promise((resolve, reject) => {
     fs.stat(basePath, (err, stat) => {
       if (err === null) {

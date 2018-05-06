@@ -1,8 +1,9 @@
 const program = require('commander')
-const pjson = require('./../../package.json')
 const precinct = require('precinct')
+const debug = require('debug')('tree')
 const pathHelpers = require('./../helpers/path')
 const fileHelpers = require('./../helpers/file')
+const pjson = require('./../../package.json')
 
 const {
   getRelativePath,
@@ -29,22 +30,32 @@ const getDepsFromFile = fileName => {
     })
 }
 
-// getDepsFromFile(inputFile)
-
-const traverse = (entryFile, deps) => {
-  console.log('E: ', entryFile, deps)
-  getDepsFromFile(entryFile)
+/**
+ * Recursively find all dependencies
+*/
+const traverse = (entryFile, deps = {}) => {
+  debug('entryFile', entryFile)
+  return getDepsFromFile(entryFile, deps)
     .then((fileDeps) => {
       if (fileDeps && fileDeps[0]) {
-        getFullRealPath(getRelativePath(entryFile, fileDeps[0]))
-          .then((fullPath) => {
-            console.log('fullPath: ', fullPath)
-            deps.push(fullPath)
-            traverse(fullPath, deps)
+        const pFullRealDeps = fileDeps.map((fileName) => {
+          return getFullRealPath(getRelativePath(entryFile, fileName))
+        })
+
+        return Promise.all(pFullRealDeps)
+          .then(fullRealDeps => {
+            deps[entryFile] = fullRealDeps
+            const pTraverses = fullRealDeps.map((fullRealDep) => {
+              return traverse(fullRealDep, deps)
+            })
+            return Promise.all(pTraverses)
+              .then(() => deps)
           })
-        // traverse(fullPath, deps)
       }
     })
 }
 
-traverse(inputFile, [])
+traverse(inputFile)
+  .then((data) => {
+    console.log('traverse', data)
+  })
