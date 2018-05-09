@@ -1,7 +1,7 @@
 import sum from './sum'
-import srtReverse from './srtReverse'
+import { strReverse1 } from './srtReverse'
 
 export default {
   sum,
-  srtReverse,
+  strReverse1,
 }
