@@ -3,6 +3,7 @@ const precinct = require('precinct')
 const debug = require('debug')
 const pathHelpers = require('./../helpers/path')
 const fileHelpers = require('./../helpers/file')
+const wrapper = require('./../templates/wrapper')
 const pjson = require('./../../package.json')
 
 const debugTree = debug('tree')
