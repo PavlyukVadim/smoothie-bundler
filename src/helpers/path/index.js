@@ -117,5 +117,5 @@ const getPathOfExternalDep = (basePath, moduleName) => {
 module.exports = {
   getPathOfDefaultFile,
   getPathWithDefaultExt,
-  getFullRealPath
+  getFullRealPath,
 }
