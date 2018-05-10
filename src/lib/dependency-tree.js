@@ -39,6 +39,8 @@ const traverse = (entryFile, deps = {}) => {
             return Promise.all(pTraverses)
               .then(() => deps)
           })
+      } else {
+        deps[entryFile] = []
       }
     })
 }
