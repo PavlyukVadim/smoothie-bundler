@@ -1,26 +1,26 @@
-const innerWrapper = function(initialModResult_, modules) {
-  var initialModResult = initialModResult_;
-  var run = function(index) {
-    var module = modules[index];
-    var theModule = {
+const innerWrapper = function(installedModules, modules) {
+  var __smoothie__require = function(moduleName) {
+    // Check if module is in cache
+    if(installedModules[moduleName]) {
+      return installedModules[moduleName].exports;
+    }
+    // Create a new module (and put it into the cache)
+    var module = installedModules[moduleName] = {
+      name: moduleName,
+      l: false, // loaded
       exports: {}
     };
-    var __smoothie__require = function(name) {
-      // half-way result, for caching & preventing infinite loops
-      module.result = theModule.exports;
-      var newIndex = module.nameIndexes[name];
-      if (newIndex === undefined) {
-        throw new Error("Cannot find module " + JSON.stringify(name) + ".");
-      }
-      if (modules[newIndex].result === initialModResult) {
-        run(newIndex);
-      }
-      return modules[newIndex].result;
-    };
-    module.fun.call(theExports, theModule.exports, theModule, __smoothie__require);
-    module.result = theModule.exports; // for caching
+
+    // Execute the module function
+    modules[moduleName].call(module.exports, module, module.exports, __smoothie__require);
+
+    // Flag the module as loaded
+    module.l = true;
+
+    // Return the exports of the module
+    return module.exports;
   };
-  run(0);
+  return __smoothie__require(modules[0])
 }
 
 const wrapper = (modulesStr) => (
@@ -29,18 +29,18 @@ const wrapper = (modulesStr) => (
   (function() {
     // \`{}\` is to guarantee that any subsequent \`mod.result\` assignment will make
     // the variable different from the initial value.
-    var initialModResult_ = {};
-    var mods_ = [
+    var installedModules = {};
+    var modules = [
       ${modulesStr}
     ];
     // This wrapper is to prevent naming conflicts.
-    (${innerWrapper})(initialModResult_, mods_);
+    (${innerWrapper})(installedModules, modules);
   })();
 
   `
 )
 
-console.log('wrapper', wrapper())
+// console.log('wrapper', wrapper())
 
 module.exports = {
   wrapper,
