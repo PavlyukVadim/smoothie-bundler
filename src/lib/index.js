@@ -2,7 +2,10 @@ const program = require('commander')
 const wrapper = require('./../templates/wrapper')
 const pjson = require('./../../package.json')
 const dependencyTree = require('./dependency-tree')
-const { getFiles } = require('./modules')
+const {
+  getFiles,
+  combineModules,
+} = require('./modules')
 
 const { traverse } = dependencyTree
 const { version } = pjson
@@ -24,7 +27,8 @@ traverse(inputFile)
     return filePaths
   })
   .then(getFiles)
-  .then(data => console.log(data))
+  .then(combineModules)
+  // .then(data => console.log(data))
   .catch((err) => {
     console.error('traverseErr', err.toString())
   })

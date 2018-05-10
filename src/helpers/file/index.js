@@ -1,12 +1,30 @@
 const fs = require('fs')
+const encoding = 'utf8'
 
 
-const readFileAsync = fileName => {
+const readFileAsync = (fileName) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(fileName, 'utf8', (err, source) => {
+    fs.readFile(fileName, encoding, (err, source) => {
       if (err) {
         reject(err)
       } else {
+        resolve({
+          fileName,
+          source,
+        })
+      }
+    })
+  })
+}
+
+
+const writeFileAsync = (fileName, data) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(fileName, data, encoding, (err, source) => {
+      if (err) {
+        reject(err)
+      } else {
+        console.log('The file was saved!')
         resolve({
           fileName,
           source,
@@ -46,6 +64,7 @@ const isDirectory = (basePath) => {
 
 module.exports = {
   readFileAsync,
+  writeFileAsync,
   isFileExist,
   isDirectory,
 }

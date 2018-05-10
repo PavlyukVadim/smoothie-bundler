@@ -1,4 +1,7 @@
-const { readFileAsync } = require('./../helpers/file')
+const {
+  readFileAsync,
+  writeFileAsync,
+} = require('./../helpers/file')
 
 const getFiles = (filePaths) => {
   const filesSrc = {}
@@ -12,6 +15,17 @@ const getFiles = (filePaths) => {
     })
 }
 
+const combineModules = (filesSrc) => {
+  const bundle = Object.keys(filesSrc).map((fileName) => {
+    const moduleSrc = filesSrc[fileName]
+    const moduleStr = '/***** \n Module: ' + fileName + '\n *****/ \n' + moduleSrc
+    return moduleStr
+  }).join('\n\n')
+
+  return writeFileAsync('demo/build.js', bundle)
+}
+
 module.exports = {
   getFiles,
+  combineModules,
 }
