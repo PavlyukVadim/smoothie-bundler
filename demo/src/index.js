@@ -1,5 +1,5 @@
 import data from './data'
-import helpers from './helpers'
+import helpers, { customFunc } from './helpers'
 // import nonExistent from './nonExistent'
 
 // import react from 'react'
@@ -9,4 +9,5 @@ import helpers from './helpers'
 console.log(data)
 // console.log(react)
 console.log(helpers)
+console.log(customFunc)
 // console.log(nonExistent)
