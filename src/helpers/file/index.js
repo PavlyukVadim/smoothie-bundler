@@ -1,13 +1,16 @@
 const fs = require('fs')
 
 
-const readFileAsync = filename => {
+const readFileAsync = fileName => {
   return new Promise((resolve, reject) => {
-    fs.readFile(filename, 'utf8', (err, data) => {
+    fs.readFile(fileName, 'utf8', (err, source) => {
       if (err) {
         reject(err)
       } else {
-        resolve(data)
+        resolve({
+          fileName,
+          source,
+        })
       }
     })
   })

@@ -9,8 +9,8 @@ const { readFileAsync } = fileHelpers
 
 const getDepsFromFile = fileName => {
   return readFileAsync(fileName)
-    .then((content) => {
-      const deps = precinct(content, { es6: { mixedImports: true } })
+    .then(({source}) => {
+      const deps = precinct(source, { es6: { mixedImports: true } })
       return deps
     })
 }
