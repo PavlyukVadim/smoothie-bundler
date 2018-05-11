@@ -29,9 +29,15 @@ traverse(inputFile)
   })
   .then(getFiles)
   .then((files) => Object.keys(files)
-    .map((name) => transformToCJS(files[name]))
+    .map((name) => transformToCJS(name, files[name]))
   )
-  .then((tFiles) => tFiles.map(wrapModule))
+  .then((tFiles) => tFiles.map((tFile) => {
+    const wrappedModule = wrapModule(tFile.code)
+    return {
+      fileName: tFile.fileName,
+      code: wrappedModule,
+    }
+  }))
   .then(combineModules)
   // .then((code) => writeFileAsync('dist/exm.js', code))
   .catch((err) => {

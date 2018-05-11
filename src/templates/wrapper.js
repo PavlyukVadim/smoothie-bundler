@@ -1,5 +1,5 @@
-const innerWrapper = function(installedModules, modules) {
-  var __smoothie__require = function(moduleName) {
+const innerWrapper = function(installedModules, modules, entryFile) {
+  var require = function(moduleName) {
     // Check if module is in cache
     if(installedModules[moduleName]) {
       return installedModules[moduleName].exports;
@@ -12,7 +12,7 @@ const innerWrapper = function(installedModules, modules) {
     };
 
     // Execute the module function
-    modules[moduleName].call(module.exports, module, module.exports, __smoothie__require);
+    modules[moduleName].call(module.exports, module, module.exports, require);
 
     // Flag the module as loaded
     module.l = true;
@@ -20,27 +20,25 @@ const innerWrapper = function(installedModules, modules) {
     // Return the exports of the module
     return module.exports;
   };
-  return __smoothie__require(modules[0])
+  return require(modules[entryFile])
 }
 
 
-const smoothieWrapper = (modulesStr) => (
+const smoothieWrapper = (modulesStr, entryFile) => (
   `
   // This wrapper is to prevent global variable assignments.
   (function() {
     // \`{}\` is to guarantee that any subsequent \`mod.result\` assignment will make
     // the variable different from the initial value.
     var installedModules = {};
-    var modules = [
+    var modules = {
       ${modulesStr}
-    ];
+    };
     // This wrapper is to prevent naming conflicts.
-    (${innerWrapper})(installedModules, modules);
+    (${innerWrapper})(installedModules, modules, entryFile);
   })();
-
   `
 )
-// console.log('wrapper', wrapper())
 
 
 module.exports = {

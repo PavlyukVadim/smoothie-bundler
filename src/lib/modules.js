@@ -49,13 +49,14 @@ const wrapModules = (modulesSrc) => {
 }
 
 
-const combineModules = (filesSrc) => {
-  const bundle = Object.keys(filesSrc).map((fileName) => {
-    const moduleSrc = filesSrc[fileName]
-    const moduleStr = '/***** \n Module: ' + fileName + '\n *****/ \n' + moduleSrc
+const combineModules = (files) => {
+  const bundle = files.map((file) => {
+    const fileName = file.fileName
+    const moduleSrc = file.code
+    const moduleStr = '/***** \n Module: ' + fileName + '\n *****/ \n' + '\'' + fileName + '\': ' + moduleSrc
     return moduleStr
   }).join(',\n\n')
-  const wrappedBundle = wrapModules(bundle)
+  const wrappedBundle = wrapModules(bundle, './demo/src/index.js')
   return writeFileAsync('demo/build.js', wrappedBundle)
 }
 
