@@ -5,8 +5,10 @@ const dependencyTree = require('./dependency-tree')
 const {
   getFiles,
   combineModules,
+  wrapModule,
 } = require('./modules')
-
+const { transformToCJS } = require('./babel')
+const { writeFileAsync } = require('./../helpers/file')
 const { traverse } = dependencyTree
 const { version } = pjson
 
@@ -27,7 +29,10 @@ traverse(inputFile)
     return filePaths
   })
   .then(getFiles)
-  .then(combineModules)
+  .then((files) => Object.values(files)[1])
+  .then(transformToCJS)
+  .then(wrapModule)
+  .then((code) => writeFileAsync('dist/exm.js', code))
   // .then(data => console.log(data))
   .catch((err) => {
     console.error('traverseErr', err.toString())
