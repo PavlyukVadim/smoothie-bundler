@@ -23,7 +23,8 @@ const innerWrapper = function(installedModules, modules) {
   return __smoothie__require(modules[0])
 }
 
-const wrapper = (modulesStr) => (
+
+const smoothieWrapper = (modulesStr) => (
   `
   // This wrapper is to prevent global variable assignments.
   (function() {
@@ -39,9 +40,9 @@ const wrapper = (modulesStr) => (
 
   `
 )
-
 // console.log('wrapper', wrapper())
 
+
 module.exports = {
-  wrapper,
+  smoothieWrapper,
 }
