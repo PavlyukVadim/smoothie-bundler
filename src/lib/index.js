@@ -27,6 +27,7 @@ console.log('outputFile', outputFile);
 
 traverse(inputFile)
   .then((data) => {
+    console.log('data', data)
     const filePaths = Object.keys(data);
     return filePaths;
   })

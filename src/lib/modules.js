@@ -1,6 +1,6 @@
 const {
-  readFileAsync,
-  writeFileAsync,
+  readFile,
+  writeFile,
 } = require('./../helpers/file');
 const {
   smoothieModule,
@@ -16,7 +16,7 @@ const {
  */
 const getFiles = (filePaths) => {
   const filesSrc = {};
-  const filesReading = filePaths.map((filePath) => readFileAsync(filePath));
+  const filesReading = filePaths.map((filePath) => readFile(filePath));
   return Promise.all(filesReading)
     .then((data) => {
       data.map(({ fileName, source, }) => {
@@ -57,7 +57,7 @@ const combineModules = (files) => {
     return moduleStr;
   }).join(',\n\n');
   const wrappedBundle = wrapModules(bundle, './demo/src/index.js');
-  return writeFileAsync('demo/build.js', wrappedBundle);
+  return writeFile('demo/build.js', wrappedBundle);
 };
 
 

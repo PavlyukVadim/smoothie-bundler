@@ -11,14 +11,14 @@ const { raceToSuccess, } = require('../promise');
  * Returns the real filePath of dependency
  *
  * @param  {String} basePath
- * @return {String}
+ * @return {Object} { basePath, realPath, }
  */
 const getFullRealPath = (basePath, relativePath) => {
   const isInternalDep = relativePath.includes('/') && relativePath.startsWith('.');
   if (isInternalDep) {
     const baseDir = path.dirname(basePath);
     const fullPath = path.join(baseDir, relativePath);
-    return getPathOfInternalDep(fullPath);
+    return getPathOfInternalDep(relativePath, fullPath);
   }
   return getPathOfExternalDep(basePath, relativePath);
 };
@@ -30,10 +30,15 @@ const getFullRealPath = (basePath, relativePath) => {
  * @param  {String} basePath - like ./src/demo/index
  * @return {String}
  */
-const getPathOfInternalDep = (basePath) => {
-  return getPathWithDefaultExtsAndDefaultFile(basePath)
-    .then((data) => data)
-    .catch(() => basePath);
+const getPathOfInternalDep = (relativePath, fullPath) => {
+  return getPathWithDefaultExtsAndDefaultFile(fullPath)
+    .then((realPath) => ({
+      relativePath,
+      realPath,
+    }))
+    .catch(() => ({
+      basePath,
+    }));
 };
 
 
@@ -109,9 +114,14 @@ const getPathOfExternalDep = (basePath, moduleName) => {
             return fullModulePath;
           });
       }
-      return modulePath;
+      return {
+        relativePath: basePath,
+        realPath: modulePath,
+      };
     })
-    .catch(() => basePath);
+    .catch(() => ({
+      relativePath: basePath,
+    }));
 };
 
 
