@@ -4,16 +4,18 @@ const debugTree = debug('tree');
 const pathHelpers = require('./../helpers/path');
 const fileHelpers = require('./../helpers/file');
 
-const { getFullRealPath } = pathHelpers;
-const { readFileAsync } = fileHelpers;
+const { getFullRealPath, } = pathHelpers;
+const { readFileAsync, } = fileHelpers;
+
 
 const getDepsFromFile = fileName => {
   return readFileAsync(fileName)
-    .then(({source}) => {
-      const deps = precinct(source, { es6: { mixedImports: true } });
+    .then(({ source, }) => {
+      const deps = precinct(source, { es6: { mixedImports: true, }, });
       return deps;
     });
 };
+
 
 /**
  * Recursively find all dependencies
@@ -45,6 +47,7 @@ const traverse = (entryFile, deps = {}) => {
     });
 };
 
+
 module.exports = {
-  traverse
+  traverse,
 };

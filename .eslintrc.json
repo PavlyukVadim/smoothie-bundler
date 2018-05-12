@@ -1,6 +1,8 @@
 {
   "extends": "standard",
   "rules": {
-    "semi": [2, "always"]
+    "semi": [2, "always"],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+    "comma-dangle": ["error", "always"]
   }
 }

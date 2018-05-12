@@ -17,6 +17,7 @@ const raceToSuccess = (promises) => {
     );
 };
 
+
 module.exports = {
-  raceToSuccess
+  raceToSuccess,
 };

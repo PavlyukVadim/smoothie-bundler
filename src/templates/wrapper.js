@@ -8,7 +8,7 @@ const innerWrapper = function (installedModules, modules, entryFile) {
     var module = installedModules[moduleName] = {
       name: moduleName,
       l: false, // loaded
-      exports: {}
+      exports: {},
     };
 
     // Execute the module function
@@ -22,6 +22,7 @@ const innerWrapper = function (installedModules, modules, entryFile) {
   };
   return require(modules[entryFile]);
 };
+
 
 const smoothieWrapper = (modulesStr, entryFile) => (
   `
@@ -39,6 +40,7 @@ const smoothieWrapper = (modulesStr, entryFile) => (
   `
 );
 
+
 module.exports = {
-  smoothieWrapper
+  smoothieWrapper,
 };

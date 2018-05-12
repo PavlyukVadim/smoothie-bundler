@@ -6,8 +6,9 @@ const filesHelpers = require('./index.js');
 const {
   getRelativePath,
   getPathOfDefaultFile,
-  getPathWithDefaultExt
+  getPathWithDefaultExt,
 } = filesHelpers;
+
 
 describe('Files helpers. getRelativePath.', function () {
   it('should return new path in the same dir', function () {
@@ -17,6 +18,7 @@ describe('Files helpers. getRelativePath.', function () {
     expect(getRelativePath(basePath, relativePath)).to.eql(expectedResult);
   });
 });
+
 
 describe('Files helpers. getPathOfDefaultFile.', function () {
   it('should return new path with default file', function () {
@@ -37,6 +39,7 @@ describe('Files helpers. getPathOfDefaultFile.', function () {
     expect(getPathOfDefaultFile(basePath)).to.eql(basePath);
   });
 });
+
 
 describe('Files helpers. getPathWithDefaultExt.', function () {
   it('should return new path with default file', function () {

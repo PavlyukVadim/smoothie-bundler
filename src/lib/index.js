@@ -5,12 +5,13 @@ const dependencyTree = require('./dependency-tree');
 const {
   getFiles,
   combineModules,
-  wrapModule
+  wrapModule,
 } = require('./modules');
-const { transformToCJS } = require('./babel');
-const { writeFileAsync } = require('./../helpers/file');
-const { traverse } = dependencyTree;
-const { version } = pjson;
+const { transformToCJS, } = require('./babel');
+const { writeFileAsync, } = require('./../helpers/file');
+const { traverse, } = dependencyTree;
+const { version, } = pjson;
+
 
 program
   .version(version)
@@ -18,9 +19,11 @@ program
   .option('-o, --output [fileName]', 'output fileName')
   .parse(process.argv);
 
+
 const inputFile = program.input;
 const outputFile = program.output; // ./../../demo/src/index.js
 console.log('outputFile', outputFile);
+
 
 traverse(inputFile)
   .then((data) => {
@@ -35,7 +38,7 @@ traverse(inputFile)
     const wrappedModule = wrapModule(tFile.code);
     return {
       fileName: tFile.fileName,
-      code: wrappedModule
+      code: wrappedModule,
     };
   }))
   .then(combineModules)

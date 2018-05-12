@@ -6,6 +6,7 @@ const smoothieModule = (moduleStr) => (
   `
 );
 
+
 module.exports = {
-  smoothieModule
+  smoothieModule,
 };

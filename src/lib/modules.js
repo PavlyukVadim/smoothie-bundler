@@ -1,11 +1,12 @@
 const {
   readFileAsync,
-  writeFileAsync
+  writeFileAsync,
 } = require('./../helpers/file');
 const {
   smoothieModule,
-  smoothieWrapper
+  smoothieWrapper,
 } = require('./../templates');
+
 
 /**
  * Returns files by paths
@@ -18,12 +19,13 @@ const getFiles = (filePaths) => {
   const filesReading = filePaths.map((filePath) => readFileAsync(filePath));
   return Promise.all(filesReading)
     .then((data) => {
-      data.map(({fileName, source}) => {
+      data.map(({ fileName, source, }) => {
         filesSrc[fileName] = source;
       });
       return filesSrc;
     });
 };
+
 
 /**
  * Returns module with IIFE surround the module
@@ -35,6 +37,7 @@ const wrapModule = (moduleSrc) => {
   return smoothieModule(moduleSrc);
 };
 
+
 /**
  * Returns modules inside the wrapper with calling modules
  *
@@ -44,6 +47,7 @@ const wrapModule = (moduleSrc) => {
 const wrapModules = (modulesSrc) => {
   return smoothieWrapper(modulesSrc);
 };
+
 
 const combineModules = (files) => {
   const bundle = files.map((file) => {
@@ -56,8 +60,9 @@ const combineModules = (files) => {
   return writeFileAsync('demo/build.js', wrappedBundle);
 };
 
+
 module.exports = {
   getFiles,
   combineModules,
-  wrapModule
+  wrapModule,
 };

@@ -50,7 +50,7 @@ const ls = (res, list) => {
 http.createServer((req, res) => {
   const url = req.url.substring(1);
   if (!url) return ls(res, cache.keys());
-  const [mod, method] = url.split('/');
+  const [ mod, method, ] = url.split('/');
   const methods = cache.get(mod);
   if (methods) {
     if (!method) return ls(res, Object.keys(methods));

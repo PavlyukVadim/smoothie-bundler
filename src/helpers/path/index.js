@@ -1,10 +1,10 @@
 const path = require('path');
-const { supportedExtensions } = require('../../config').config;
+const { supportedExtensions, } = require('../../config').config;
 const {
   isFileExist,
-  readFileAsync
+  readFileAsync,
 } = require('../file');
-const { raceToSuccess } = require('../promise');
+const { raceToSuccess, } = require('../promise');
 
 /**
  * Returns the real filePath of dependency
@@ -52,7 +52,7 @@ const getPathWithDefaultExt = (basePath, defaultExt = '.js') => {
   if (extname) return basePath;
   return path.format({
     name: basePath,
-    ext: defaultExt
+    ext: defaultExt,
   });
 };
 
@@ -66,7 +66,7 @@ const getPathOfDefaultFile = (
   return path.format({
     dir: basePath,
     name: defaultFileName,
-    ext: defaultExt
+    ext: defaultExt,
   });
 };
 
@@ -111,5 +111,5 @@ const getPathOfExternalDep = (basePath, moduleName) => {
 module.exports = {
   getPathOfDefaultFile,
   getPathWithDefaultExt,
-  getFullRealPath
+  getFullRealPath,
 };
