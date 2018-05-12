@@ -6,6 +6,7 @@ const {
 } = require('../file');
 const { raceToSuccess, } = require('../promise');
 
+
 /**
  * Returns the real filePath of dependency
  *
@@ -22,6 +23,7 @@ const getFullRealPath = (basePath, relativePath) => {
   return getPathOfExternalDep(basePath, relativePath);
 };
 
+
 /**
  * Returns the real filePath of internal dependency
  *
@@ -33,6 +35,7 @@ const getPathOfInternalDep = (basePath) => {
     .then((data) => data)
     .catch(() => basePath);
 };
+
 
 const getPathWithDefaultExtsAndDefaultFile = (basePath) => {
   const exts = supportedExtensions.map((ext) => `.${ext}`);
@@ -47,6 +50,7 @@ const getPathWithDefaultExtsAndDefaultFile = (basePath) => {
   return raceToSuccess(attempts);
 };
 
+
 const getPathWithDefaultExt = (basePath, defaultExt = '.js') => {
   const extname = path.extname(basePath);
   if (extname) return basePath;
@@ -55,6 +59,7 @@ const getPathWithDefaultExt = (basePath, defaultExt = '.js') => {
     ext: defaultExt,
   });
 };
+
 
 const getPathOfDefaultFile = (
   basePath,
@@ -69,6 +74,7 @@ const getPathOfDefaultFile = (
     ext: defaultExt,
   });
 };
+
 
 /**
  * Returns the real filePath of external dependency
@@ -107,6 +113,7 @@ const getPathOfExternalDep = (basePath, moduleName) => {
     })
     .catch(() => basePath);
 };
+
 
 module.exports = {
   getPathOfDefaultFile,
