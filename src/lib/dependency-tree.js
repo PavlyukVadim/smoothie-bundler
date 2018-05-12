@@ -1,15 +1,17 @@
 const precinct = require('precinct');
 const debug = require('debug');
 const debugTree = debug('tree');
-const pathHelpers = require('./../helpers/path');
-const fileHelpers = require('./../helpers/file');
+const { getFullRealPath, } = require('./../helpers/path');
+const { readFile, } = require('./../helpers/file');
 
-const { getFullRealPath, } = pathHelpers;
-const { readFileAsync, } = fileHelpers;
-
-
-const getDepsFromFile = fileName => {
-  return readFileAsync(fileName)
+/**
+ * Returns array of modules dependencies
+ *
+ * @param  {String} fileName
+ * @return {Array}
+ */
+const getDepsFromFile = (fileName) => {
+  return readFile(fileName)
     .then(({ source, }) => {
       const deps = precinct(source, { es6: { mixedImports: true, }, });
       return deps;

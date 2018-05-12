@@ -8,7 +8,7 @@ const {
   wrapModule,
 } = require('./modules');
 const { transformToCJS, } = require('./babel');
-const { writeFileAsync, } = require('./../helpers/file');
+const { writeFile, } = require('./../helpers/file');
 const { traverse, } = dependencyTree;
 const { version, } = pjson;
 

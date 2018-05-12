@@ -2,7 +2,7 @@ const fs = require('fs');
 const encoding = 'utf8';
 
 
-const readFileAsync = (fileName) => {
+const readFile = (fileName) => {
   return new Promise((resolve, reject) => {
     fs.readFile(fileName, encoding, (err, source) => {
       if (err) {
@@ -18,7 +18,7 @@ const readFileAsync = (fileName) => {
 };
 
 
-const writeFileAsync = (fileName, data) => {
+const writeFile = (fileName, data) => {
   return new Promise((resolve, reject) => {
     fs.writeFile(fileName, data, encoding, (err, source) => {
       if (err) {
@@ -63,8 +63,8 @@ const isDirectory = (basePath) => {
 
 
 module.exports = {
-  readFileAsync,
-  writeFileAsync,
+  readFile,
+  writeFile,
   isFileExist,
   isDirectory,
 };
