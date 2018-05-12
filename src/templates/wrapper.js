@@ -1,14 +1,14 @@
-const innerWrapper = function(installedModules, modules, entryFile) {
-  var require = function(moduleName) {
+const innerWrapper = function (installedModules, modules, entryFile) {
+  var require = function (moduleName) {
     // Check if module is in cache
-    if(installedModules[moduleName]) {
+    if (installedModules[moduleName]) {
       return installedModules[moduleName].exports;
     }
     // Create a new module (and put it into the cache)
     var module = installedModules[moduleName] = {
       name: moduleName,
       l: false, // loaded
-      exports: {}
+      exports: {},
     };
 
     // Execute the module function
@@ -20,8 +20,8 @@ const innerWrapper = function(installedModules, modules, entryFile) {
     // Return the exports of the module
     return module.exports;
   };
-  return require(modules[entryFile])
-}
+  return require(modules[entryFile]);
+};
 
 
 const smoothieWrapper = (modulesStr, entryFile) => (
@@ -38,9 +38,9 @@ const smoothieWrapper = (modulesStr, entryFile) => (
     (${innerWrapper})(installedModules, modules, entryFile);
   })();
   `
-)
+);
 
 
 module.exports = {
   smoothieWrapper,
-}
+};

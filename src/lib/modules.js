@@ -1,11 +1,11 @@
 const {
   readFileAsync,
   writeFileAsync,
-} = require('./../helpers/file')
+} = require('./../helpers/file');
 const {
   smoothieModule,
   smoothieWrapper,
-} = require('./../templates')
+} = require('./../templates');
 
 
 /**
@@ -15,16 +15,16 @@ const {
  * @return {String}
  */
 const getFiles = (filePaths) => {
-  const filesSrc = {}
-  const filesReading = filePaths.map((filePath) => readFileAsync(filePath))
+  const filesSrc = {};
+  const filesReading = filePaths.map((filePath) => readFileAsync(filePath));
   return Promise.all(filesReading)
     .then((data) => {
-      data.map(({fileName, source}) => {
-        filesSrc[fileName] = source
-      })
-      return filesSrc
-    })
-}
+      data.map(({ fileName, source, }) => {
+        filesSrc[fileName] = source;
+      });
+      return filesSrc;
+    });
+};
 
 
 /**
@@ -34,8 +34,8 @@ const getFiles = (filePaths) => {
  * @return {String}
  */
 const wrapModule = (moduleSrc) => {
-  return smoothieModule(moduleSrc)
-}
+  return smoothieModule(moduleSrc);
+};
 
 
 /**
@@ -45,24 +45,24 @@ const wrapModule = (moduleSrc) => {
  * @return {String}
  */
 const wrapModules = (modulesSrc) => {
-  return smoothieWrapper(modulesSrc)
-}
+  return smoothieWrapper(modulesSrc);
+};
 
 
 const combineModules = (files) => {
   const bundle = files.map((file) => {
-    const fileName = file.fileName
-    const moduleSrc = file.code
-    const moduleStr = '/***** \n Module: ' + fileName + '\n *****/ \n' + '\'' + fileName + '\': ' + moduleSrc
-    return moduleStr
-  }).join(',\n\n')
-  const wrappedBundle = wrapModules(bundle, './demo/src/index.js')
-  return writeFileAsync('demo/build.js', wrappedBundle)
-}
+    const fileName = file.fileName;
+    const moduleSrc = file.code;
+    const moduleStr = '/***** \n Module: ' + fileName + '\n *****/ \n' + '\'' + fileName + '\': ' + moduleSrc;
+    return moduleStr;
+  }).join(',\n\n');
+  const wrappedBundle = wrapModules(bundle, './demo/src/index.js');
+  return writeFileAsync('demo/build.js', wrappedBundle);
+};
 
 
 module.exports = {
   getFiles,
   combineModules,
   wrapModule,
-}
+};

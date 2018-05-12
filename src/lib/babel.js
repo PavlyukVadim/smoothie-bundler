@@ -1,5 +1,5 @@
-const babel = require('babel-core')
-const plugins = ['transform-es2015-modules-commonjs']
+const babel = require('babel-core');
+const plugins = [ 'transform-es2015-modules-commonjs', ];
 
 
 /**
@@ -10,14 +10,14 @@ const plugins = ['transform-es2015-modules-commonjs']
  * @return {String}
  */
 const transformToCJS = (fileName, code) => {
-  const transformed = babel.transform(code, { plugins })
+  const transformed = babel.transform(code, { plugins, });
   return {
     fileName,
-    code: transformed.code ,
-  }
-}
+    code: transformed.code,
+  };
+};
 
 
 module.exports = {
   transformToCJS,
-}
+};

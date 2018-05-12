@@ -4,8 +4,9 @@ const smoothieModule = (moduleStr) => (
       ${moduleStr}
     })
   `
-)
+);
+
 
 module.exports = {
   smoothieModule,
-}
+};

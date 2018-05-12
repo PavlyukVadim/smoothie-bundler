@@ -1,7 +1,8 @@
 const config = {
-  supportedExtensions: ['js']
-}
+  supportedExtensions: [ 'js', ],
+};
+
 
 module.exports = {
-  config
-}
+  config,
+};
