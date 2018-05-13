@@ -20,7 +20,7 @@ const innerWrapper = function (installedModules, modules, entryFile) {
     // Return the exports of the module
     return module.exports;
   };
-  return require(modules[entryFile]);
+  return require(entryFile);
 };
 
 
@@ -35,7 +35,7 @@ const smoothieWrapper = (modulesStr, entryFile) => (
       ${modulesStr}
     };
     // This wrapper is to prevent naming conflicts.
-    (${innerWrapper})(installedModules, modules, entryFile);
+    (${innerWrapper})(installedModules, modules, '${entryFile}');
   })();
   `
 );

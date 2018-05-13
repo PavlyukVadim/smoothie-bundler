@@ -6,8 +6,8 @@ import helpers, { customFunc } from './helpers'
 // const _ = require('underscore')._
 
 // console.log(_)
-console.log(data)
-// console.log(react)
+console.log('data', data)
+console.log(react)
 console.log(helpers)
 console.log(customFunc)
 // console.log(nonExistent)

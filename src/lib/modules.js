@@ -44,8 +44,8 @@ const wrapModule = (moduleSrc) => {
  * @param  {String} modulesSrc - source code of the modules
  * @return {String}
  */
-const wrapModules = (modulesSrc) => {
-  return smoothieWrapper(modulesSrc);
+const wrapModules = (modulesSrc, entryFile) => {
+  return smoothieWrapper(modulesSrc, entryFile);
 };
 
 
