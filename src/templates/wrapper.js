@@ -31,6 +31,12 @@ const smoothieWrapper = (modulesStr, entryFile) => (
     // \`{}\` is to guarantee that any subsequent \`mod.result\` assignment will make
     // the variable different from the initial value.
     var installedModules = {};
+    
+    var process = {
+      env: {
+      }
+    }
+    
     var modules = {
       ${modulesStr}
     };

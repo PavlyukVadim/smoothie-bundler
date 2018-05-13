@@ -46,7 +46,9 @@ traverse(inputFile)
           const fileDeps = data[fileName]
           const wrappedModuleWithRealPaths = fileDeps.reduce((prevModule, dep) => {
             const { relativePath, realPath, } = dep
-            return replaceInCode(prevModule, relativePath, realPath)
+            const findWhat = new RegExp(`require\\(('|")${relativePath}('|")\\)`)
+            const replaceWith = `require('${realPath}')`
+            return replaceInCode(prevModule, findWhat, replaceWith)
           }, wrappedModule)
           return {
             fileName,
