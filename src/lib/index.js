@@ -1,5 +1,4 @@
 const program = require('commander');
-const wrapper = require('./../templates/wrapper');
 const pjson = require('./../../package.json');
 const dependencyTree = require('./dependency-tree');
 const {
@@ -9,6 +8,7 @@ const {
 } = require('./modules');
 const { transformToCJS, } = require('./babel');
 const { writeFile, } = require('./../helpers/file');
+const { replaceInCode, } = require('./../helpers/text');
 const { traverse, } = dependencyTree;
 const { version, } = pjson;
 
@@ -17,32 +17,47 @@ program
   .version(version)
   .option('-i, --input [fileName]', 'input fileName')
   .option('-o, --output [fileName]', 'output fileName')
+  .option('-g, --graph', 'save dependency-tree')
   .parse(process.argv);
 
 
 const inputFile = program.input;
-const outputFile = program.output; // ./../../demo/src/index.js
-console.log('outputFile', outputFile);
+const outputFile = program.output;
 
+
+if (program.graph) {
+  return traverse(inputFile)
+    .then((data) => JSON.stringify(data, undefined, 2))
+    .then((json) => {
+      console.log('data', json)
+      writeFile(outputFile, json)
+    })
+}
 
 traverse(inputFile)
   .then((data) => {
     const filePaths = Object.keys(data);
-    return filePaths;
+    return getFiles(filePaths)
+      .then(files => Object.keys(files)
+        .map((name) => transformToCJS(name, files[name]))
+        .map((tFile) => {
+          const { code, fileName, } = tFile;
+          const wrappedModule = wrapModule(code);
+          const fileDeps = data[fileName]
+          const wrappedModuleWithRealPaths = fileDeps.reduce((prevModule, dep) => {
+            const { relativePath, realPath, } = dep
+            const findWhat = new RegExp(`require\\(('|")${relativePath}('|")\\)`)
+            const replaceWith = `require('${realPath}')`
+            return replaceInCode(prevModule, findWhat, replaceWith)
+          }, wrappedModule)
+          return {
+            fileName,
+            code: wrappedModuleWithRealPaths,
+          };
+        })
+      );
   })
-  .then(getFiles)
-  .then((files) => Object.keys(files)
-    .map((name) => transformToCJS(name, files[name]))
-  )
-  .then((tFiles) => tFiles.map((tFile) => {
-    const wrappedModule = wrapModule(tFile.code);
-    return {
-      fileName: tFile.fileName,
-      code: wrappedModule,
-    };
-  }))
-  .then(combineModules)
-  // .then((code) => writeFileAsync('dist/exm.js', code))
+  .then((files) => combineModules(files, outputFile))
   .catch((err) => {
     console.error('traverseErr', err.toString());
   });

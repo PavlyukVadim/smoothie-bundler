@@ -20,7 +20,7 @@ const innerWrapper = function (installedModules, modules, entryFile) {
     // Return the exports of the module
     return module.exports;
   };
-  return require(modules[entryFile]);
+  return require(entryFile);
 };
 
 
@@ -31,11 +31,17 @@ const smoothieWrapper = (modulesStr, entryFile) => (
     // \`{}\` is to guarantee that any subsequent \`mod.result\` assignment will make
     // the variable different from the initial value.
     var installedModules = {};
+    
+    var process = {
+      env: {
+      }
+    }
+    
     var modules = {
       ${modulesStr}
     };
     // This wrapper is to prevent naming conflicts.
-    (${innerWrapper})(installedModules, modules, entryFile);
+    (${innerWrapper})(installedModules, modules, '${entryFile}');
   })();
   `
 );

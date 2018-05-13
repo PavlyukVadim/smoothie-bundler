@@ -2,7 +2,7 @@ const path = require('path');
 const { supportedExtensions, } = require('../../config').config;
 const {
   isFileExist,
-  readFileAsync,
+  readFile,
 } = require('../file');
 const { raceToSuccess, } = require('../promise');
 
@@ -11,14 +11,15 @@ const { raceToSuccess, } = require('../promise');
  * Returns the real filePath of dependency
  *
  * @param  {String} basePath
- * @return {String}
+ * @param  {String} relativePath - like ./data
+ * @return {Object} { basePath, realPath, }
  */
 const getFullRealPath = (basePath, relativePath) => {
   const isInternalDep = relativePath.includes('/') && relativePath.startsWith('.');
   if (isInternalDep) {
     const baseDir = path.dirname(basePath);
     const fullPath = path.join(baseDir, relativePath);
-    return getPathOfInternalDep(fullPath);
+    return getPathOfInternalDep(relativePath, fullPath);
   }
   return getPathOfExternalDep(basePath, relativePath);
 };
@@ -27,13 +28,19 @@ const getFullRealPath = (basePath, relativePath) => {
 /**
  * Returns the real filePath of internal dependency
  *
- * @param  {String} basePath - like ./src/demo/index
- * @return {String}
+ * @param  {String} relativePath - like ./data
+ * @param  {String} fullPath
+ * @return {Object} { basePath, realPath, }
  */
-const getPathOfInternalDep = (basePath) => {
-  return getPathWithDefaultExtsAndDefaultFile(basePath)
-    .then((data) => data)
-    .catch(() => basePath);
+const getPathOfInternalDep = (relativePath, fullPath) => {
+  return getPathWithDefaultExtsAndDefaultFile(fullPath)
+    .then((realPath) => ({
+      relativePath,
+      realPath,
+    }))
+    .catch(() => ({
+      basePath,
+    }));
 };
 
 
@@ -101,17 +108,25 @@ const getPathOfExternalDep = (basePath, moduleName) => {
     .then((modulePath) => {
       if (isRootModule) {
         const pjsonPath = path.join(modulePath, 'package.json');
-        return readFileAsync(pjsonPath)
-          .then((pjson) => JSON.parse(pjson))
+        return readFile(pjsonPath)
+          .then(({ source, }) => JSON.parse(source))
           .then((data) => {
-            const mainFile = data.domain || defaultMainFile;
+            const mainFile = data.main || defaultMainFile;
             const fullModulePath = path.join(modulePath, mainFile);
-            return fullModulePath;
+            return {
+              relativePath: moduleName,
+              realPath: fullModulePath,
+            };
           });
       }
-      return modulePath;
+      return {
+        relativePath: moduleName,
+        realPath: modulePath,
+      };
     })
-    .catch(() => basePath);
+    .catch(() => ({
+      relativePath: basePath,
+    }));
 };
 
 

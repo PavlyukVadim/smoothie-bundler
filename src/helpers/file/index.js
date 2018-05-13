@@ -24,7 +24,7 @@ const writeFile = (fileName, data) => {
       if (err) {
         reject(err);
       } else {
-        console.log('The file was saved!');
+        console.log(`The file '${fileName}' was saved!`);
         resolve({
           fileName,
           source,

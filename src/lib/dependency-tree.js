@@ -38,8 +38,8 @@ const traverse = (entryFile, deps = {}) => {
         return Promise.all(pFullRealDeps)
           .then(fullRealDeps => {
             deps[entryFile] = fullRealDeps;
-            const pTraverses = fullRealDeps.map((fullRealDep) => {
-              return traverse(fullRealDep, deps);
+            const pTraverses = fullRealDeps.map(({realPath}) => {
+              return traverse(realPath, deps);
             });
             return Promise.all(pTraverses)
               .then(() => deps);
