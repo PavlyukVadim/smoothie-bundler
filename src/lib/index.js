@@ -1,5 +1,4 @@
 const program = require('commander');
-const wrapper = require('./../templates/wrapper');
 const pjson = require('./../../package.json');
 const dependencyTree = require('./dependency-tree');
 const {
@@ -18,13 +17,22 @@ program
   .version(version)
   .option('-i, --input [fileName]', 'input fileName')
   .option('-o, --output [fileName]', 'output fileName')
+  .option('-g, --graph', 'save dependency-tree')
   .parse(process.argv);
 
 
 const inputFile = program.input;
-const outputFile = program.output; // ./../../demo/src/index.js
-console.log('outputFile', outputFile);
+const outputFile = program.output;
 
+
+if (program.graph) {
+  return traverse(inputFile)
+    .then((data) => JSON.stringify(data, undefined, 2))
+    .then((json) => {
+      console.log('data', json)
+      writeFile(outputFile, json)
+    })
+}
 
 traverse(inputFile)
   .then((data) => {
@@ -47,7 +55,7 @@ traverse(inputFile)
         })
       );
   })
-  .then(combineModules)
+  .then((files) => combineModules(files, outputFile))
   .catch((err) => {
     console.error('traverseErr', err.toString());
   });

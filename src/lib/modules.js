@@ -49,7 +49,7 @@ const wrapModules = (modulesSrc, entryFile) => {
 };
 
 
-const combineModules = (files) => {
+const combineModules = (files, outputFile) => {
   const bundle = files.map((file) => {
     const fileName = file.fileName;
     const moduleSrc = file.code;
@@ -57,7 +57,7 @@ const combineModules = (files) => {
     return moduleStr;
   }).join(',\n\n');
   const wrappedBundle = wrapModules(bundle, './demo/src/index.js');
-  return writeFile('demo/build.js', wrappedBundle);
+  return writeFile(outputFile, wrappedBundle);
 };
 
 

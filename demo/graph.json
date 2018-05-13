@@ -1,0 +1,37 @@
+{
+  "./demo/src/index.js": [
+    {
+      "relativePath": "./data",
+      "realPath": "demo/src/data/index.js"
+    },
+    {
+      "relativePath": "./helpers",
+      "realPath": "demo/src/helpers/index.js"
+    }
+  ],
+  "demo/src/helpers/index.js": [
+    {
+      "relativePath": "./sum",
+      "realPath": "demo/src/helpers/sum.js"
+    },
+    {
+      "relativePath": "./srtReverse",
+      "realPath": "demo/src/helpers/srtReverse.js"
+    }
+  ],
+  "demo/src/data/index.js": [
+    {
+      "relativePath": "./users",
+      "realPath": "demo/src/data/users.js"
+    }
+  ],
+  "demo/src/helpers/srtReverse.js": [],
+  "demo/src/helpers/sum.js": [],
+  "demo/src/data/users.js": [
+    {
+      "relativePath": "./../User",
+      "realPath": "demo/src/User/index.js"
+    }
+  ],
+  "demo/src/User/index.js": []
+}
