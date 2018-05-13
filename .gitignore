@@ -61,3 +61,5 @@ typings/
 
 /dist
 /demo/build.js
+/demo/graph.json
+
