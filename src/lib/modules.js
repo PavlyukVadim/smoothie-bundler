@@ -12,7 +12,7 @@ const {
  * Returns files by paths
  *
  * @param  {Array} filePaths - arr of paths
- * @return {String}
+ * @return {Object} { fileName: source }
  */
 const getFiles = (filePaths) => {
   const filesSrc = {};

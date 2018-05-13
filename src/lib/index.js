@@ -9,6 +9,7 @@ const {
 } = require('./modules');
 const { transformToCJS, } = require('./babel');
 const { writeFile, } = require('./../helpers/file');
+const { replaceInCode, } = require('./../helpers/text');
 const { traverse, } = dependencyTree;
 const { version, } = pjson;
 
@@ -27,23 +28,26 @@ console.log('outputFile', outputFile);
 
 traverse(inputFile)
   .then((data) => {
-    console.log('data', data)
     const filePaths = Object.keys(data);
-    return filePaths;
+    return getFiles(filePaths)
+      .then(files => Object.keys(files)
+        .map((name) => transformToCJS(name, files[name]))
+        .map((tFile) => {
+          const { code, fileName, } = tFile;
+          const wrappedModule = wrapModule(code);
+          const fileDeps = data[fileName]
+          const wrappedModuleWithRealPaths = fileDeps.reduce((prevModule, dep) => {
+            const { relativePath, realPath, } = dep
+            return replaceInCode(prevModule, relativePath, realPath)
+          }, wrappedModule)
+          return {
+            fileName,
+            code: wrappedModuleWithRealPaths,
+          };
+        })
+      );
   })
-  .then(getFiles)
-  .then((files) => Object.keys(files)
-    .map((name) => transformToCJS(name, files[name]))
-  )
-  .then((tFiles) => tFiles.map((tFile) => {
-    const wrappedModule = wrapModule(tFile.code);
-    return {
-      fileName: tFile.fileName,
-      code: wrappedModule,
-    };
-  }))
   .then(combineModules)
-  // .then((code) => writeFileAsync('dist/exm.js', code))
   .catch((err) => {
     console.error('traverseErr', err.toString());
   });
