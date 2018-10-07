@@ -3,7 +3,7 @@ import helpers, { customFunc } from './helpers'
 // import nonExistent from './nonExistent'
 
 // import ReactDOM from 'react-dom'
-import React from 'react'
+// import React from 'react'
 
 // const _ = require('underscore')._
 
